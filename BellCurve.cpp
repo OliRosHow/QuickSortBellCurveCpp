@@ -25,12 +25,14 @@ double calculateAverage(vector<double> exams)
 
     return average;
 } 
+
 void swap (int i, int j, vector<Student>& S)
 {
     Student temp = S[i];
     S[i] = S[j];
     S[j] = temp;
 }
+
 void partition(int low, int high, int& pivotpoint, vector<Student>& S)
 {
         int i, j;
@@ -73,34 +75,19 @@ int search(string name, vector<Student> S)
     return -1;
 
 }
-
-int main()
-{
-    ifstream fileIn;
-    int numberOfStudents;
-    vector<int> gradeDistribution;
-    vector<string> alphabetOrderedNames;
+void read(string fileName, int& numberOfStudents, vector<string>& alphabetOrderedNames, vector<Student>& students)
+{   
+    ifstream fileIn; 
     vector<double> grades;
-    vector<Student> students;
     string name;
     string line;
     double grade;
     Student student;
-
-
-
-
-    fileIn.open("input.txt");
     
+    fileIn.open(fileName);
     getline(fileIn, line);
     numberOfStudents = stoi(line);
-    
-    gradeDistribution.push_back((numberOfStudents/10) * 1);
-    gradeDistribution.push_back((numberOfStudents/10) * 2);
-    gradeDistribution.push_back((numberOfStudents/10) * 4);
-    gradeDistribution.push_back((numberOfStudents/10) * 2);
-    gradeDistribution.push_back((numberOfStudents/10) * 1);
-    
+
     while(!fileIn.eof())
     {
         
@@ -119,11 +106,28 @@ int main()
         student = Student{name, grade};
         alphabetOrderedNames.push_back(name);
         students.push_back(student);
-        
-
-        
 
     }
+    fileIn.close();
+}
+
+int main()
+{
+
+    int numberOfStudents;
+    vector<int> gradeDistribution;
+    vector<string> alphabetOrderedNames;
+    vector<Student> students;
+
+    read("input.txt", numberOfStudents, alphabetOrderedNames, students);
+    
+    gradeDistribution.push_back((numberOfStudents/10) * 1);
+    gradeDistribution.push_back((numberOfStudents/10) * 2);
+    gradeDistribution.push_back((numberOfStudents/10) * 4);
+    gradeDistribution.push_back((numberOfStudents/10) * 2);
+    gradeDistribution.push_back((numberOfStudents/10) * 1);
+    
+   
     quicksort(0, students.size() - 1, students);
 
     for(int i = 0; i < students.size(); i++)
@@ -131,9 +135,5 @@ int main()
         cout << students[i].name << ": " << students[i].average << "\n";
     }
 
-
-
-
-    fileIn.close();
     return 0;
 }
